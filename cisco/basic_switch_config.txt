@@ -1,0 +1,31 @@
+! Basic Cisco switch configuration example
+
+hostname SW-ACCESS-01
+
+no ip domain-lookup
+ip domain-name example.local
+
+vtp mode transparent
+
+spanning-tree mode rapid-pvst
+spanning-tree portfast default
+spanning-tree bpduguard default
+
+line con 0
+ logging synchronous
+ exec-timeout 10 0
+
+line vty 0 4
+ transport input ssh
+ login local
+
+username admin privilege 15 secret <replace-with-secret>
+
+crypto key generate rsa modulus 2048
+
+interface vlan 10
+ description Management
+ ip address 10.10.10.10 255.255.255.0
+ no shutdown
+
+ip default-gateway 10.10.10.1
